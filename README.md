@@ -17,7 +17,8 @@ The project revolves around setting up a Git repository, making changes to code 
 Git Basics - Working with Remotes
 
 ### Credits
-ALX vim material
+ALX vim materials
+Udacity Material
 
 ###Experience
 It was Mind Boggling and great
