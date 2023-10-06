@@ -7,6 +7,11 @@ CITY_DATA = {
     'washington': 'washington.csv'
 }
 
+def main():
+    print('Welcome to the Bikeshare Data Analysis Tool!')
+    
+    while True:
+       
 def get_city():
     """Prompts the user to enter a city and validates the input."""
     while True:
