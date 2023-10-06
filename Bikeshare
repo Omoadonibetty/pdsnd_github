@@ -1,0 +1,155 @@
+import time
+import pandas as pd
+
+CITY_DATA = {
+    'chicago': 'chicago.csv',
+    'new york city': 'new_york_city.csv',
+    'washington': 'washington.csv'
+}
+
+def get_city():
+    """Prompts the user to enter a city and validates the input."""
+    while True:
+        city = input('\nEnter a city (Chicago, New York City, Washington): ').lower()
+        if city in CITY_DATA:
+            return city
+        else:
+            print("Invalid city. Please choose from Chicago, New York City, or Washington.")
+
+def get_month():
+    """Prompts the user to enter a month and validates the input."""
+    while True:
+        month = input("Enter a month (all, January, February, March, April, May, June): ").lower()
+        if month in ('all', 'january', 'february', 'march', 'april', 'may', 'june'):
+            return month
+        else:
+            print("Invalid month. Please choose from the provided options.")
+
+def get_day():
+    """Prompts the user to enter a day and validates the input."""
+    while True:
+        day = input("Enter a specific day (all, Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday): ").lower()
+        if day in ('all', 'sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'):
+            return day
+        else:
+            print("Invalid day. Please choose from the provided options.")
+
+def get_raw_data(df):
+    """Prompts the user if they want to see raw data and displays it interactively."""
+    start_idx = 0
+    while True:
+        show_raw = input('\nWould you like to see raw data? Enter yes or no.\n').lower()
+        if show_raw == 'yes':
+            print(df.iloc[start_idx:start_idx+5])
+            start_idx += 5
+        elif show_raw == 'no':
+            break
+        else:
+            print("Invalid input. Please enter 'yes' or 'no'.")
+
+def get_filters():
+    """Asks the user to specify a city, month, and day to analyze."""
+    print('Hello! Let\'s explore some US bikeshare data!')
+    
+    city = get_city()
+    month = get_month()
+    day = get_day()
+    
+    print('-' * 40)
+    return city, month, day
+
+def load_data(city, month, day):
+    """Loads data for the specified city and filters by month and day if applicable."""
+    df = pd.read_csv(CITY_DATA[city])
+    df['Start Time'] = pd.to_datetime(df['Start Time'])
+
+    if month != 'all':
+        months = ['january', 'february', 'march', 'april', 'may', 'june']
+        month = months.index(month) + 1
+        df = df[df['Start Time'].dt.month == month]
+
+    if day != 'all':
+        df = df[df['Start Time'].dt.day_name().str.lower() == day]
+
+    return df
+
+def time_stats(df):
+    """Displays statistics on the most frequent times of travel."""
+    if df.empty:
+        print("No data available for the selected filters.")
+        return
+
+    print('\nCalculating The Most Frequent Times of Travel...\n')
+    start_time = time.time()
+
+    popular_month = df['Start Time'].dt.month.mode().iloc[0]
+    popular_day = df['Start Time'].dt.day_name().mode().iloc[0]
+    popular_hour = df['Start Time'].dt.hour.mode().iloc[0]
+
+    print('Most Common Month:', popular_month)
+    print('Most Common Day:', popular_day)
+    print('Most Common Hour:', popular_hour)
+
+    print("\nThis took {:.2f} seconds.".format(time.time() - start_time))
+    print('-' * 40)
+
+def station_stats(df):
+    """Displays statistics on the most popular stations and trip."""
+    if df.empty:
+        print("No data available for the selected filters.")
+        return
+
+    print('\nCalculating The Most Popular Stations and Trip...\n')
+    start_time = time.time()
+
+    # Add your code for station statistics here
+
+    print("\nThis took {:.2f} seconds.".format(time.time() - start_time))
+    print('-' * 40)
+
+def trip_duration_stats(df):
+    """Displays statistics on the total and average trip duration."""
+    if df.empty:
+        print("No data available for the selected filters.")
+        return
+
+    print('\nCalculating Trip Duration...\n')
+    start_time = time.time()
+
+    # Add your code for trip duration statistics here
+
+    print("\nThis took {:.2f} seconds.".format(time.time() - start_time))
+    print('-' * 40)
+
+def user_stats(df):
+    """Displays statistics on bikeshare users."""
+    if df.empty:
+        print("No data available for the selected filters.")
+        return
+
+    print('\nCalculating User Stats...\n')
+    start_time = time.time()
+
+    # Add your code for user statistics here
+
+    print("\nThis took {:.2f} seconds.".format(time.time() - start_time))
+    print('-' * 40)
+
+def main():
+    while True:
+        city, month, day = get_filters()
+        df = load_data(city, month, day)
+
+        time_stats(df)
+        station_stats(df)
+        trip_duration_stats(df)
+        user_stats(df)
+
+        get_raw_data(df)  # Prompt for and display raw data
+
+        restart = input('\nWould you like to restart? Enter yes or no.\n').lower()
+        if restart != 'yes':
+            break
+
+if __name__ == "__main__":
+    main()
