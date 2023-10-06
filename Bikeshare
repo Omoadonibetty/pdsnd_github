@@ -35,7 +35,15 @@ def get_day():
             print("Invalid day. Please choose from the provided options.")
 
 def get_raw_data(df):
-    """Prompts the user if they want to see raw data and displays it interactively."""
+    """
+    Prompts the user if they want to see raw data and displays it interactively.
+
+    Args:
+        df (DataFrame): The DataFrame containing bikeshare data.
+
+    Returns:
+        None
+    """
     start_idx = 0
     while True:
         show_raw = input('\nWould you like to see raw data? Enter yes or no.\n').lower()
